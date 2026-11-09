@@ -49,6 +49,7 @@ export default function MyBooksPage() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    document.title = "BookNook | My Books";
     if (!isLoading && !user) {
       toast.info("Please sign in to access your contributed books.");
       router.push("/login?callbackUrl=/my-books");

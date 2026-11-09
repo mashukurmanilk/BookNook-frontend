@@ -22,6 +22,7 @@ function LoginForm() {
   const [formError, setFormError] = useState("");
 
   useEffect(() => {
+    document.title = "BookNook | Login";
     if (wasRegistered) {
       toast.success("Account created successfully! Please sign in to continue.");
     }

@@ -19,6 +19,10 @@ export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
+  React.useEffect(() => {
+    document.title = "BookNook | Register";
+  }, []);
+
   // Validation criteria:
   // 1. Uppercase letter
   // 2. Lowercase letter

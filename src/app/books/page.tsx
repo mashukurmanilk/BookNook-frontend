@@ -20,6 +20,7 @@ function BooksContent() {
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title_asc" | "title_desc">("newest");
 
   useEffect(() => {
+    document.title = "BookNook | All Books";
     async function fetchBooks() {
       try {
         setLoading(true);

@@ -41,6 +41,7 @@ export default function MyBorrowsPage() {
   const [returningId, setReturningId] = useState<string | null>(null);
 
   useEffect(() => {
+    document.title = "BookNook | My Borrows";
     if (!isLoading && !user) {
       toast.info("Please sign in to view your borrowed books.");
       router.push("/login?callbackUrl=/my-borrows");

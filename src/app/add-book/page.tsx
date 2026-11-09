@@ -36,6 +36,7 @@ export default function AddBookPage() {
 
   // Authentication check: don't prematurely redirect while session is loading
   useEffect(() => {
+    document.title = "BookNook | Add Book";
     if (!isLoading && !user) {
       toast.info("Please sign in to add books to the library.");
       router.push("/login?callbackUrl=/add-book");
