@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fbfbf9;
+    --foreground: #1c1d21;
+    --card: #ffffff;
+    --card-foreground: #1c1d21;
+    --popover: #ffffff;
+    --popover-foreground: #1c1d21;
+    --primary: #c2410c;
+    --primary-foreground: #ffffff;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --accent: #fff7ed;
+    --accent-foreground: #c2410c;
+    --border: #e5e7eb;
+    --ring: #c2410c;
+  }
+
+  .dark {
+    --background: #0f1115;
+    --foreground: #f3f4f6;
+    --card: #181a20;
+    --card-foreground: #f3f4f6;
+    --popover: #181a20;
+    --popover-foreground: #f3f4f6;
+    --primary: #ea580c;
+    --primary-foreground: #ffffff;
+    --muted: #1f232b;
+    --muted-foreground: #9ca3af;
+    --accent: #2c1a14;
+    --accent-foreground: #fb923c;
+    --border: #272a34;
+    --ring: #ea580c;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-200;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom Swiper Styles */
+.swiper-pagination-bullet {
+  background: #9ca3af !important;
+  opacity: 0.6 !important;
+  width: 10px !important;
+  height: 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #c2410c !important;
+  opacity: 1 !important;
+  width: 28px !important;
+  border-radius: 6px !important;
+}
+
+.dark .swiper-pagination-bullet-active {
+  background: #ea580c !important;
+}
+
+/* Glassmorphism helpers */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass {
+  background: rgba(18, 20, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
