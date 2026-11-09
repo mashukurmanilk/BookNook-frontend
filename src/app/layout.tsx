@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
@@ -7,16 +6,6 @@ import { ToasterProvider } from "@/components/ToasterProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingActions } from "@/components/FloatingActions";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-serif",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -34,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
         <ThemeProvider
           attribute="class"
