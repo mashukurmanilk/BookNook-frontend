@@ -10,9 +10,7 @@ import { ReaderReviews } from "@/components/ReaderReviews";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { apiRequest } from "@/lib/api";
 import { Sparkles, ArrowRight, BookOpen } from "lucide-react";
-import dns from "node:dns";
 
-dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 export default function HomePage() {
   const [newArrivals, setNewArrivals] = useState<BookItem[]>([]);
