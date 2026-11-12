@@ -8,7 +8,7 @@ const db = client.db(process.env.DB_NAME || "BookNook");
 
 export const auth = betterAuth({
   database: mongodbAdapter(db),
-  secret: process.env.BETTER_AUTH_SECRET || "booknook_super_secure_jwt_auth_secret_2026_key",
+  secret: process.env.BETTER_AUTH_SECRET,
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
   emailAndPassword: {
     enabled: true,
@@ -31,9 +31,7 @@ export const auth = betterAuth({
   },
   plugins: [
     jwt({
-      jwt: {
-        expirationTime: "7d",
-      },
+      jwt: {expirationTime: 7*24*60*60}
     }),
   ],
 });
