@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { HeroSlider } from "@/components/HeroSlider";
 import { BookCard, BookItem } from "@/components/BookCard";
-import { PromoBanner } from "@/components/PromoBanner";
+import { CategoryExplorer } from "@/components/CategoryExplorer";
 import { HowItWorks } from "@/components/HowItWorks";
 import { ReaderReviews } from "@/components/ReaderReviews";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -116,8 +116,8 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 3. Promo Banner: Children Books Collection (Inspired by uploaded Image 2) */}
-      <PromoBanner />
+      {/* 3. Category Explorer: Browse by Category without gradients */}
+      <CategoryExplorer />
 
       {/* 4. How Borrowing Works */}
       <HowItWorks />

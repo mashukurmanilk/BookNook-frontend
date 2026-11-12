@@ -4,17 +4,18 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, EffectFade, Navigation } from "swiper/modules";
-import { ArrowRight, BookOpen, Layers, CheckCircle2, ArrowUpRight } from "lucide-react";
+import { Autoplay, EffectFade, Pagination, Navigation } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import { BookOpen, Layers, ArrowUpRight, Clock } from "lucide-react";
 import { apiRequest } from "@/lib/api";
 import { BookItem } from "@/components/BookCard";
 
 import "swiper/css";
+import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import "swiper/css/effect-fade";
 
-// Fallback curated titles if DB is empty on first boot
+// Fallback curated titles if DB is empty on initial setup
 const DEFAULT_FALLBACK_BOOKS: BookItem[] = [
   {
     _id: "seed-1",
@@ -76,14 +77,15 @@ const DEFAULT_FALLBACK_BOOKS: BookItem[] = [
 export function HeroSlider() {
   const [books, setBooks] = useState<BookItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [progressPercent, setProgressPercent] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
     async function loadHeroBooks() {
       try {
         setLoading(true);
-        // Load the first 5 books from the database
+        // Fetch first 5 books from the database
         const res = await apiRequest<BookItem[]>("/books?limit=5&sort=newest");
         if (res.success && Array.isArray(res.data) && res.data.length > 0) {
           setBooks(res.data.slice(0, 5));
@@ -105,49 +107,59 @@ export function HeroSlider() {
 
   return (
     <section className="relative w-full overflow-hidden bg-[#14151a] text-white border-b border-border/40">
-      {/* Dynamic 5-second progress bar indicating active book duration */}
+      {/* 5-second progress bar showing the time completing for the active book */}
       <div className="absolute top-0 left-0 right-0 z-30 h-1 bg-white/10">
         <div
-          className="h-full bg-brand-500 transition-all duration-100 ease-linear"
-          style={{ width: `${progressPercent}%` }}
+          ref={progressBarRef}
+          className="h-full bg-brand-500 will-change-[width]"
+          style={{ width: "0%" }}
         />
       </div>
 
       <Swiper
-        modules={[Autoplay, Pagination, EffectFade, Navigation]}
+        modules={[Autoplay, EffectFade, Pagination, Navigation]}
         effect="fade"
         fadeEffect={{
           crossFade: true,
         }}
-        speed={1100}
+        speed={1000} // Smooth 1s crossfade transition
         autoplay={{
           delay: 5000, // 5 seconds per book
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
         loop={displayedBooks.length > 1}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
         onSlideChange={(swiper) => {
-          setActiveIndex(swiper.realIndex);
+          setActiveSlideIndex(swiper.realIndex);
+          if (progressBarRef.current) {
+            progressBarRef.current.style.width = "0%";
+          }
         }}
-        onAutoplayTimeLeft={(swiper, timeLeft, percentage) => {
-          // percentage goes from 1 down to 0, convert to 0 -> 100%
-          const pct = Math.max(0, Math.min(100, Math.round((1 - percentage) * 100)));
-          setProgressPercent(pct);
+        onAutoplayTimeLeft={(_swiper, _timeLeft, percentage) => {
+          if (progressBarRef.current) {
+            // In Swiper, percentage goes from 1.0 to 0.0. (1 - percentage) goes from 0 to 100%
+            const pct = Math.max(0, Math.min(100, (1 - percentage) * 100));
+            progressBarRef.current.style.width = `${pct}%`;
+          }
         }}
-        className="w-full min-h-[580px] lg:min-h-[620px]"
+        className="w-full min-h-[560px] lg:min-h-[600px]"
       >
         {displayedBooks.map((book, index) => {
           const detailUrl = book._id.startsWith("seed-") ? "/books" : `/books/${book._id}`;
 
           return (
             <SwiperSlide key={book._id}>
-              <div className="relative w-full min-h-[580px] lg:min-h-[620px] flex items-center py-10 sm:py-14 lg:py-16 bg-[#14151a]">
+              <div className="relative w-full min-h-[560px] lg:min-h-[600px] flex items-center py-8 sm:py-12 lg:py-16 bg-[#14151a]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                  {/* Grid layout: image order-1 on mobile, text order-2 on mobile */}
+                  {/* Grid layout: image is order-1 on mobile, text is order-2 on mobile */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
                     
-                    {/* 1. Book Cover Showcase: In mobile view, the image is FIRST (order-1), desktop is right (order-2) */}
+                    {/* 1. Book Cover Showcase: IN MOBILE VIEW, IMAGE IS FIRST (order-1), on desktop it sits on the right (order-2) */}
                     <div className="order-1 lg:order-2 lg:col-span-5 flex flex-col items-center justify-center">
-                      <div className="relative w-52 sm:w-64 lg:w-76 aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-[#1c1d24]">
+                      <div className="relative w-48 sm:w-60 lg:w-72 aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-[#1b1c23]">
                         {book.image ? (
                           <Image
                             src={book.image}
@@ -159,37 +171,42 @@ export function HeroSlider() {
                           />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-stone-400">
-                            <BookOpen className="w-16 h-16 mb-2 text-stone-500" />
+                            <BookOpen className="w-14 h-14 mb-2 text-stone-500" />
                             <span className="font-serif text-sm font-semibold text-white">
                               {book.title}
                             </span>
                           </div>
                         )}
 
-                        {/* Top Badge */}
+                        {/* Top Stock Badge */}
                         <div className="absolute top-3 right-3">
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-black/75 backdrop-blur text-emerald-400 border border-white/10">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-black/80 backdrop-blur text-emerald-400 border border-white/10">
                             {book.availableCopies} in stock
                           </span>
                         </div>
                       </div>
 
-                      {/* Active Book Indicator under image for mobile */}
+                      {/* Active Book Indicator under image on mobile */}
                       <div className="mt-3 flex items-center gap-2 lg:hidden text-xs text-stone-400">
                         <span className="text-brand-400 font-semibold">0{index + 1}</span>
                         <span>/</span>
                         <span>0{displayedBooks.length}</span>
+                        <span className="text-stone-500">•</span>
+                        <span className="flex items-center gap-1 text-[11px] text-stone-400">
+                          <Clock className="w-3 h-3 text-brand-400" />
+                          5s
+                        </span>
                       </div>
                     </div>
 
-                    {/* 2. Text Content: In mobile view, text is SECOND (order-2), desktop is left (order-1) */}
+                    {/* 2. Text Content: IN MOBILE VIEW, TEXT IS SECOND (order-2), on desktop it sits on the left (order-1) */}
                     <div className="order-2 lg:order-1 lg:col-span-7 space-y-5 text-center lg:text-left">
                       {/* Meta badge */}
                       <div className="flex items-center justify-center lg:justify-start gap-2.5">
                         <span className="px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold uppercase tracking-widest border border-white/10">
                           {book.category}
                         </span>
-                        <span className="text-xs text-stone-400 flex items-center gap-1">
+                        <span className="text-xs text-stone-400 flex items-center gap-1.5">
                           <Layers className="w-3.5 h-3.5" />
                           <span>{book.totalCopies} Total Copies</span>
                         </span>
@@ -214,7 +231,7 @@ export function HeroSlider() {
                       <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
                         <Link
                           href={detailUrl}
-                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3 rounded-full bg-white text-stone-950 font-semibold text-xs sm:text-sm hover:bg-stone-200 transition-all duration-200 shadow-lg"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-white text-stone-950 font-semibold text-xs sm:text-sm hover:bg-stone-200 transition-all duration-200 shadow-lg"
                         >
                           <span>View Details</span>
                           <ArrowUpRight className="w-4 h-4" />
@@ -235,7 +252,10 @@ export function HeroSlider() {
                           Book {index + 1} of {displayedBooks.length}
                         </span>
                         <span>•</span>
-                        <span>5s Auto-rotation</span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5 text-stone-400" />
+                          5-Second Rotation
+                        </span>
                       </div>
                     </div>
 
