@@ -111,7 +111,7 @@ export function HeroSlider() {
       <div className="absolute top-0 left-0 right-0 z-30 h-1 bg-white/10">
         <div
           ref={progressBarRef}
-          className="h-full bg-brand-500 will-change-[width]"
+          className="h-full bg-neutral-300 will-change-[width]"
           style={{ width: "0%" }}
         />
       </div>
@@ -124,7 +124,7 @@ export function HeroSlider() {
         }}
         speed={1000} // Smooth 1s crossfade transition
         autoplay={{
-          delay: 5000, // 5 seconds per book
+          delay: 10000, // 10 seconds per book
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
@@ -185,18 +185,6 @@ export function HeroSlider() {
                           </span>
                         </div>
                       </div>
-
-                      {/* Active Book Indicator under image on mobile */}
-                      <div className="mt-3 flex items-center gap-2 lg:hidden text-xs text-stone-400">
-                        <span className="text-brand-400 font-semibold">0{index + 1}</span>
-                        <span>/</span>
-                        <span>0{displayedBooks.length}</span>
-                        <span className="text-stone-500">•</span>
-                        <span className="flex items-center gap-1 text-[11px] text-stone-400">
-                          <Clock className="w-3 h-3 text-brand-400" />
-                          5s
-                        </span>
-                      </div>
                     </div>
 
                     {/* 2. Text Content: IN MOBILE VIEW, TEXT IS SECOND (order-2), on desktop it sits on the left (order-1) */}
@@ -244,18 +232,6 @@ export function HeroSlider() {
                           <BookOpen className="w-4 h-4 text-brand-400" />
                           <span>Browse All Books</span>
                         </Link>
-                      </div>
-
-                      {/* Desktop Carousel Indicators */}
-                      <div className="hidden lg:flex items-center gap-3 pt-4 border-t border-white/10 text-xs text-stone-400">
-                        <span className="font-mono text-brand-400 font-bold">
-                          Book {index + 1} of {displayedBooks.length}
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-stone-400" />
-                          5-Second Rotation
-                        </span>
                       </div>
                     </div>
 
