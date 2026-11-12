@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
+import "dotenv/config";
 
 export const dynamic = "force-dynamic";
 
 const uri =
   process.env.MONGODB_URI ||
-  "mongodb://mashukurmanik_booknook:0lr2CpeFzLVvG5Nd@ac-s0yaqn0-shard-00-00.jcsvfv3.mongodb.net:27017,ac-s0yaqn0-shard-00-01.jcsvfv3.mongodb.net:27017,ac-s0yaqn0-shard-00-02.jcsvfv3.mongodb.net:27017/BookNook?ssl=true&authSource=admin&retryWrites=true&w=majority";
-
+  "";
 const sampleBooks = [
   {
     title: "The Science of Spice",
