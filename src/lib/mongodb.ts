@@ -1,4 +1,10 @@
+import dns from "node:dns";
 import { MongoClient } from "mongodb";
+
+// Configure reliable DNS servers for Atlas SRV resolution
+try {
+  dns.setServers(["8.8.8.8", "8.8.4.4"]);
+} catch (e) {}
 
 const uri =
   process.env.MONGODB_URI ||

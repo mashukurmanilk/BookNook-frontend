@@ -1,5 +1,4 @@
 import React from "react";
-import { Star, Quote } from "lucide-react";
 
 export function ReaderReviews() {
   const reviews = [
@@ -54,13 +53,26 @@ export function ReaderReviews() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     {[...Array(rev.rating)].map((_, i) => (
-                      <Star
+                      <svg
                         key={i}
                         className="w-4 h-4 fill-amber-400 text-amber-400"
-                      />
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
                     ))}
                   </div>
-                  <Quote className="w-6 h-6 text-muted-foreground/30" />
+                  <svg
+                    className="w-6 h-6 text-muted-foreground/30 fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
                 </div>
                 <p className="text-sm text-foreground/90 italic leading-relaxed">
                   &ldquo;{rev.comment}&rdquo;

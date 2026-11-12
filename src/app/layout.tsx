@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="font-sans">
       <body className="min-h-screen flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
         <ThemeProvider
           attribute="class"

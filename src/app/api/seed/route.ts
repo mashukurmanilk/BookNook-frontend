@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 
+export const dynamic = "force-dynamic";
+
 const uri =
   process.env.MONGODB_URI ||
   "mongodb+srv://mashukurmanik_booknook:0lr2CpeFzLVvG5Nd@cluster0.jcsvfv3.mongodb.net/BookNook?retryWrites=true&w=majority";
