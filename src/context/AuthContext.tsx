@@ -139,7 +139,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await signIn.social({
         provider: "google",
-        callbackURL: window.location.origin,
+        callbackURL: process.env.NEXT_PUBLIC_APP_URL,
       });
     } catch (err: any) {
       toast.error(err.message || "Google sign in failed.");
