@@ -16,8 +16,8 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "mock_google_client_id",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "mock_google_client_secret",
+      clientId: process.env.GOOGLE_CLIENT_ID as string || "mock_google_client_id",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string || "mock_google_client_secret",
       enabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_ID !== "mock_client_id_for_dev"),
     },
   },
