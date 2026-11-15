@@ -1,5 +1,17 @@
-const BACKEND_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const BACKEND_URL = (
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+)
+  .trim()
+  .replace(/\/$/, "");
+
+// In-browser diagnostic warning if production HTTPS environment is missing NEXT_PUBLIC_API_URL
+if (typeof window !== "undefined") {
+  if (window.location.protocol === "https:" && BACKEND_URL.startsWith("http://localhost")) {
+    console.warn(
+      "[BookNook] Warning: NEXT_PUBLIC_API_URL is defaulting to http://localhost:8000 on an HTTPS production deployment. Browsers block requests to localhost from HTTPS. Please set NEXT_PUBLIC_API_URL in your Vercel project settings to your backend URL and Redeploy."
+    );
+  }
+}
 
 let cachedToken: string | null = null;
 
